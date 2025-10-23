@@ -1,0 +1,27 @@
+{
+    "include": [
+        "out/src/**/*.js"
+    ],
+    "exclude": [
+        "out/test/**",
+        "out/src/test/**",
+        "node_modules/**"
+    ],
+    "extension": [
+        ".js"
+    ],
+    "reporter": [
+        "text",
+        "html",
+        "json"
+    ],
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 85,
+    "check-coverage": true,
+    "all": true,
+    "cache": true,
+    "sourceMap": false,
+    "instrument": false
+}

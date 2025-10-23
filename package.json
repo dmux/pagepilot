@@ -1,0 +1,84 @@
+{
+  "name": "pagepilot",
+  "displayName": "PagePilot",
+  "description": "Multi-language development assistant that loads external context (docs, APIs, READMEs) for enhanced VS Code Chat responses. Supports English and Portuguese (Brazil).",
+  "icon": "images/icon.png",
+  "version": "0.0.1",
+  "publisher": "rfsales",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmux/pagepilot.git"
+  },
+  "engines": {
+    "vscode": "^1.105.0"
+  },
+  "categories": [
+    "Chat",
+    "Machine Learning"
+  ],
+  "activationEvents": [
+    "onChatParticipant:pagepilot"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "pagepilot",
+        "name": "pagepilot",
+        "description": "Development assistant that loads context from URLs (documentation, APIs, READMEs) for enhanced responses.",
+        "commands": [
+          {
+            "name": "load",
+            "description": "Load context file (llms.txt) from a URL"
+          },
+          {
+            "name": "clear",
+            "description": "Clear loaded context"
+          },
+          {
+            "name": "status",
+            "description": "Show current context information"
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "test:coverage": "nyc --reporter=html --reporter=text npm test",
+    "coverage": "npm run test:coverage && open coverage/index.html",
+    "test:report": "node test-coverage.js"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/sinon": "^17.0.4",
+    "@types/vscode": "^1.105.0",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "c8": "^10.1.3",
+    "eslint": "^9.36.0",
+    "nock": "^14.0.10",
+    "nyc": "^17.1.0",
+    "sinon": "^21.0.0",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "webpack": "^5.102.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "axios": "^1.12.2"
+  }
+}
