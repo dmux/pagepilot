@@ -3,7 +3,7 @@
   "displayName": "PagePilot",
   "description": "Multi-language development assistant that loads external context (docs, APIs, READMEs) for enhanced VS Code Chat responses. Supports English and Portuguese (Brazil).",
   "icon": "images/icon.png",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "rfsales",
   "license": "MIT",
   "repository": {
@@ -28,6 +28,10 @@
         "name": "pagepilot",
         "description": "Development assistant that loads context from URLs (documentation, APIs, READMEs) for enhanced responses.",
         "commands": [
+          {
+            "name": "docs",
+            "description": "Manage documentation sources (add, remove, switch, list)"
+          },
           {
             "name": "load",
             "description": "Load context file (llms.txt) from a URL"
@@ -79,6 +83,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "axios": "^1.12.2"
+    "axios": "^1.12.2",
+    "cosine-similarity": "^1.0.0"
   }
 }

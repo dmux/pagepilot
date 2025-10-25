@@ -5,6 +5,30 @@ export type SupportedLanguage = "en" | "pt-BR";
 
 // Translation interface
 interface Translations {
+  // Docs command
+  docs: {
+    add: {
+      usage: string;
+      success: string;
+    };
+    remove: {
+      usage: string;
+      success: string;
+    };
+    switch: {
+      usage: string;
+      success: string;
+    };
+    list: {
+      noDocs: string;
+      availableDocs: string;
+    };
+    select: {
+      placeholder: string;
+    };
+    usage: string;
+  };
+
   // Commands help
   loadCommandHelp: {
     title: string;
@@ -81,6 +105,29 @@ interface Translations {
 
 // English translations
 const enTranslations: Translations = {
+  docs: {
+    add: {
+      usage: "**Usage:** `/docs add <name> <url>`",
+      success: "✅ **Documentation source \"{name}\" added and set as active!**",
+    },
+    remove: {
+      usage: "**Usage:** `/docs remove <name>`",
+      success: "🗑️ **Documentation source \"{name}\" removed!**",
+    },
+    switch: {
+      usage: "**Usage:** `/docs switch <name>`",
+      success: "🔄 **Switched to documentation source \"{name}\"!**",
+    },
+    list: {
+      noDocs: "🔍 **No documentation sources found.**",
+      availableDocs: "📚 **Available documentation sources:**",
+    },
+    select: {
+      placeholder: "Select a documentation file to load",
+    },
+    usage: "**Usage:** `/docs <add|remove|switch|list>`",
+  },
+
   loadCommandHelp: {
     title: "📋 **Development Context Loader**",
     usage: "**Usage:** `/load <URL>`",
@@ -157,6 +204,29 @@ const enTranslations: Translations = {
 
 // Portuguese (Brazil) translations
 const ptBRTranslations: Translations = {
+  docs: {
+    add: {
+      usage: "**Uso:** `/docs add <nome> <url>`",
+      success: "✅ **Fonte de documentação \"{name}\" adicionada e definida como ativa!**",
+    },
+    remove: {
+      usage: "**Uso:** `/docs remove <nome>`",
+      success: "🗑️ **Fonte de documentação \"{name}\" removida!**",
+    },
+    switch: {
+      usage: "**Uso:** `/docs switch <nome>`",
+      success: "🔄 **Alternado para a fonte de documentação \"{name}\"!**",
+    },
+    list: {
+      noDocs: "🔍 **Nenhuma fonte de documentação encontrada.**",
+      availableDocs: "📚 **Fontes de documentação disponíveis:**",
+    },
+    select: {
+      placeholder: "Selecione um arquivo de documentação para carregar",
+    },
+    usage: "**Uso:** `/docs <add|remove|switch|list>`",
+  },
+
   loadCommandHelp: {
     title: "📋 **Carregador de Contexto para Desenvolvimento**",
     usage: "**Uso:** `/load <URL>`",
