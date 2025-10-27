@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { cosineSimilarity } from "cosine-similarity";
+import cosineSimilarity = require("cosine-similarity");
 
 const MAX_CHUNK_SIZE = 512;
 
