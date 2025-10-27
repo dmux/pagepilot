@@ -3,7 +3,7 @@
   "displayName": "PagePilot",
   "description": "Multi-language development assistant that loads external context (docs, APIs, READMEs) for enhanced VS Code Chat responses. Supports English and Portuguese (Brazil).",
   "icon": "images/icon.png",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "rfsales",
   "license": "MIT",
   "repository": {

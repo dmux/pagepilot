@@ -38,11 +38,14 @@ function createBoW(text: string, vocab: string[]): number[] {
 
 export function generateEmbeddings(content: string): { chunk: string; embedding: number[] }[] {
   const chunks = chunkText(content);
+  if (chunks.length === 0) {
+    return [];
+  }
   const vocab = Array.from(new Set(content.toLowerCase().split(/\s+/)));
   const embeddings = chunks.map((chunk) => ({
     chunk,
     embedding: createBoW(chunk, vocab),
-  }));
+  })).filter(e => e.embedding.some(v => v > 0));
   return embeddings;
 }
 
@@ -55,8 +58,12 @@ export function findMostRelevantChunks(
     return [];
   }
 
-  const vocab = Array.from(new Set(embeddings.flatMap(e => e.chunk).join(" ").toLowerCase().split(/\s+/)));
+  const vocab = Array.from(new Set(embeddings.map(e => e.chunk).join(" ").toLowerCase().split(/\s+/)));
   const questionEmbedding = createBoW(question, vocab);
+
+  if (questionEmbedding.every(v => v === 0)) {
+    return [];
+  }
 
   const similarities = embeddings.map((e) => ({
     chunk: e.chunk,
@@ -65,5 +72,5 @@ export function findMostRelevantChunks(
 
   similarities.sort((a, b) => b.similarity - a.similarity);
 
-  return similarities.slice(0, topK).map((s) => s.chunk);
+  return similarities.filter(s => s.similarity > 0).slice(0, topK).map((s) => s.chunk);
 }
