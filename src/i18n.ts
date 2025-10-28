@@ -23,6 +23,10 @@ interface Translations {
       noDocs: string;
       availableDocs: string;
     };
+    clear: {
+      success: string;
+      confirmation: string;
+    };
     select: {
       placeholder: string;
     };
@@ -108,24 +112,29 @@ const enTranslations: Translations = {
   docs: {
     add: {
       usage: "**Usage:** `/docs add <name> <url>`",
-      success: "✅ **Documentation source \"{name}\" added and set as active!**",
+      success: '✅ **Documentation source "{name}" added and set as active!**',
     },
     remove: {
       usage: "**Usage:** `/docs remove <name>`",
-      success: "🗑️ **Documentation source \"{name}\" removed!**",
+      success: '🗑️ **Documentation source "{name}" removed!**',
     },
     switch: {
       usage: "**Usage:** `/docs switch <name>`",
-      success: "🔄 **Switched to documentation source \"{name}\"!**",
+      success: '🔄 **Switched to documentation source "{name}"!**',
     },
     list: {
       noDocs: "🔍 **No documentation sources found.**",
       availableDocs: "📚 **Available documentation sources:**",
     },
+    clear: {
+      success: "🧹 **All documentation sources cleared!**",
+      confirmation:
+        "⚠️ **This will remove all loaded documentation sources. Are you sure?**",
+    },
     select: {
       placeholder: "Select a documentation file to load",
     },
-    usage: "**Usage:** `/docs <add|remove|switch|list>`",
+    usage: "**Usage:** `/docs <add|remove|switch|list|clear>`",
   },
 
   loadCommandHelp: {
@@ -207,24 +216,30 @@ const ptBRTranslations: Translations = {
   docs: {
     add: {
       usage: "**Uso:** `/docs add <nome> <url>`",
-      success: "✅ **Fonte de documentação \"{name}\" adicionada e definida como ativa!**",
+      success:
+        '✅ **Fonte de documentação "{name}" adicionada e definida como ativa!**',
     },
     remove: {
       usage: "**Uso:** `/docs remove <nome>`",
-      success: "🗑️ **Fonte de documentação \"{name}\" removida!**",
+      success: '🗑️ **Fonte de documentação "{name}" removida!**',
     },
     switch: {
       usage: "**Uso:** `/docs switch <nome>`",
-      success: "🔄 **Alternado para a fonte de documentação \"{name}\"!**",
+      success: '🔄 **Alternado para a fonte de documentação "{name}"!**',
     },
     list: {
       noDocs: "🔍 **Nenhuma fonte de documentação encontrada.**",
       availableDocs: "📚 **Fontes de documentação disponíveis:**",
     },
+    clear: {
+      success: "🧹 **Todas as fontes de documentação foram removidas!**",
+      confirmation:
+        "⚠️ **Isso removerá todas as fontes de documentação carregadas. Tem certeza?**",
+    },
     select: {
       placeholder: "Selecione um arquivo de documentação para carregar",
     },
-    usage: "**Uso:** `/docs <add|remove|switch|list>`",
+    usage: "**Uso:** `/docs <add|remove|switch|list|clear>`",
   },
 
   loadCommandHelp: {

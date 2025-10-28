@@ -8,6 +8,7 @@ import {
   setActiveDoc,
   getActiveDoc,
   clearActiveDoc,
+  clearAllDocSources,
 } from "./context";
 import { generateEmbeddings } from "./embeddings";
 
@@ -55,7 +56,9 @@ ${url}
         return;
       }
       await removeDocSource(context, nameToRemove);
-      stream.markdown(translations.docs.remove.success.replace("{name}", nameToRemove));
+      stream.markdown(
+        translations.docs.remove.success.replace("{name}", nameToRemove)
+      );
       break;
     case "switch":
       const [nameToSwitch] = rest;
@@ -64,7 +67,9 @@ ${url}
         return;
       }
       await setActiveDoc(context, nameToSwitch);
-      stream.markdown(translations.docs.switch.success.replace("{name}", nameToSwitch));
+      stream.markdown(
+        translations.docs.switch.success.replace("{name}", nameToSwitch)
+      );
       break;
     case "list":
       const sources = getDocSources(context);
@@ -76,10 +81,42 @@ ${url}
       const sourceList = sources
         .map(
           (source) =>
-            `  • ${source.name} ${source.name === activeDoc?.name ? "(active)" : ""}`
+            `  • ${source.name} ${
+              source.name === activeDoc?.name ? "(active)" : ""
+            }`
         )
         .join("\n");
       stream.markdown(`${translations.docs.list.availableDocs}\n${sourceList}`);
+      break;
+    case "clear":
+      if (rest[0] === "confirm") {
+        await clearAllDocSources(context);
+        stream.markdown(translations.docs.clear.success);
+      } else {
+        // Show confirmation message
+        const sources = getDocSources(context);
+        if (sources.length === 0) {
+          stream.markdown(translations.docs.list.noDocs);
+          return;
+        }
+
+        const sourceCount = sources.length;
+        const activeDoc = getActiveDoc(context);
+        const sourcesList = sources
+          .map(
+            (source) =>
+              `  • ${source.name} ${
+                source.name === activeDoc?.name ? "(active)" : ""
+              }`
+          )
+          .join("\n");
+
+        stream.markdown(
+          `${translations.docs.clear.confirmation}\n\n` +
+            `📚 **Current sources (${sourceCount}):**\n${sourcesList}\n\n` +
+            `Type \`/docs clear confirm\` to proceed.`
+        );
+      }
       break;
     default:
       stream.markdown(translations.docs.usage);
@@ -162,7 +199,9 @@ ${url}
     stream.markdown(
       `${translations.success.loaded}\n\n` +
         `${translations.success.source} ${url}\n` +
-        `${translations.success.statistics} ${wordCount.toLocaleString()} ${wordLabel}, ${charCount.toLocaleString()} ${charLabel}\n\n` +
+        `${
+          translations.success.statistics
+        } ${wordCount.toLocaleString()} ${wordLabel}, ${charCount.toLocaleString()} ${charLabel}\n\n` +
         translations.success.ready
     );
   } catch (error) {
@@ -207,7 +246,9 @@ export function handleStatusCommand(
     stream.markdown(
       `${translations.status.contextStatus}\n\n` +
         `${translations.success.source} ${activeDoc.url}\n` +
-        `${translations.success.statistics} ${wordCount.toLocaleString()} ${wordLabel}, ${charCount.toLocaleString()} ${charLabel}\n` +
+        `${
+          translations.success.statistics
+        } ${wordCount.toLocaleString()} ${wordLabel}, ${charCount.toLocaleString()} ${charLabel}\n` +
         `${translations.status.persistence}\n\n` +
         translations.status.readyToAnswer
     );

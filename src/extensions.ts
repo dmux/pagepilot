@@ -8,8 +8,17 @@ import {
 import { getActiveDoc } from "./context";
 import { sendChatRequest } from "./llm";
 import { getTranslations } from "./util";
+import { initializeEnhancedEmbeddings } from "./embeddings";
 
 export function activate(context: vscode.ExtensionContext) {
+  // Initialize enhanced embeddings with extension context
+  try {
+    initializeEnhancedEmbeddings(context);
+  } catch (error) {
+    console.warn("Failed to initialize enhanced embeddings:", error);
+    // Continue with basic functionality
+  }
+
   const handler: vscode.ChatRequestHandler = async (
     request: vscode.ChatRequest,
     chatContext: vscode.ChatContext,
