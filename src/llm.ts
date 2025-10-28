@@ -2,19 +2,25 @@ import * as vscode from "vscode";
 import { getTranslations } from "./util";
 import { findMostRelevantChunks } from "./embeddings";
 import { DocSource } from "./context";
+import { encode } from "gpt-3-encoder";
 
 export async function sendChatRequest(
   request: vscode.ChatRequest,
   token: vscode.CancellationToken,
   activeDoc: DocSource
-) {
+): Promise<{
+  response: vscode.LanguageModelChatResponse;
+  tokenCount: number;
+}> {
   const translations = getTranslations();
 
-  const relevantChunks = findMostRelevantChunks(request.prompt, activeDoc.embeddings);
+  const relevantChunks = findMostRelevantChunks(
+    request.prompt,
+    activeDoc.embeddings
+  );
   const context = relevantChunks.join("\n");
 
-  const isPortuguese =
-    vscode.env.language.startsWith("pt");
+  const isPortuguese = vscode.env.language.startsWith("pt");
   const systemPrompt = isPortuguese
     ? `Você é um assistente especialista em desenvolvimento de software. Use o contexto fornecido abaixo para enriquecer suas respostas sobre código, APIs, documentação técnica, bibliotecas, frameworks e práticas de desenvolvimento.
 
@@ -42,8 +48,8 @@ QUESTION: ${request.prompt}
 ANSWER:`;
 
   const messages = [vscode.LanguageModelChatMessage.User(systemPrompt)];
-
+  const tokenCount = encode(systemPrompt).length;
   const chatResponse = await request.model.sendRequest(messages, {}, token);
 
-  return chatResponse;
+  return { response: chatResponse, tokenCount };
 }

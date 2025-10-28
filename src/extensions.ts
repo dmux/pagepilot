@@ -10,6 +10,12 @@ import { sendChatRequest } from "./llm";
 import { getTranslations } from "./util";
 
 export function activate(context: vscode.ExtensionContext) {
+  const tokenCounter = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  context.subscriptions.push(tokenCounter);
+
   const handler: vscode.ChatRequestHandler = async (
     request: vscode.ChatRequest,
     chatContext: vscode.ChatContext,
@@ -85,8 +91,15 @@ ${translations.examples.bestPractices}`
     stream.markdown(translations.loading.analyzing);
 
     try {
-      const chatResponse = await sendChatRequest(request, token, activeDoc);
-      for await (const fragment of chatResponse.text) {
+      const { response, tokenCount } = await sendChatRequest(
+        request,
+        token,
+        activeDoc
+      );
+      tokenCounter.text = `$(symbol-keyword) ${tokenCount} tokens`;
+      tokenCounter.show();
+
+      for await (const fragment of response.text) {
         stream.markdown(fragment);
       }
     } catch (error) {

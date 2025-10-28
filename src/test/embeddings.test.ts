@@ -28,9 +28,12 @@ suite("Embeddings Tests", () => {
   });
 
   test("should return top chunks with TF-IDF", () => {
-    const content =
-      "The cat sat on the mat. The dog ate the food. The bird flew away.";
-    const embeddings = generateEmbeddings(content);
+    const content = [
+      "The cat sat on the mat",
+      "The dog ate the food",
+      "The bird flew away",
+    ];
+    const embeddings = content.flatMap(generateEmbeddings);
     const chunks = findMostRelevantChunks("dog", embeddings, 1);
     assert.strictEqual(chunks.length, 1);
     assert.strictEqual(chunks[0], "The dog ate the food");
@@ -43,14 +46,14 @@ suite("Embeddings Tests", () => {
   });
 
   test("should handle stemming", () => {
-    const content = "Eu estou correndo no parque. Ele corre todos os dias.";
-    const embeddings = generateEmbeddings(content);
+    const content = [
+      "Eu estou correndo no parque",
+      "Ele corre todos os dias",
+    ];
+    const embeddings = content.flatMap(generateEmbeddings);
     const chunks = findMostRelevantChunks("correr", embeddings, 1);
     assert.strictEqual(chunks.length, 1);
-    assert.strictEqual(
-      chunks[0],
-      "Eu estou correndo no parque"
-    );
+    assert.strictEqual(chunks[0], "Eu estou correndo no parque");
   });
 
   test("should handle stopwords", () => {
