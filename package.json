@@ -84,7 +84,9 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
+    "@types/natural": "^5.1.5",
     "axios": "^1.12.2",
-    "fast-cosine-similarity": "^1.2.2"
+    "fast-cosine-similarity": "^1.2.2",
+    "natural": "^8.1.0"
   }
 }
