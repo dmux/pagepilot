@@ -1,5 +1,5 @@
 import { PorterStemmerPt, TfIdf, WordTokenizer, NGrams } from "natural";
-import { stopwords as stopwords_pt } from "natural/lib/natural/util/stopwords_pt";
+import * as stopwordsPt from "natural/lib/natural/util/stopwords_pt";
 import { cosineSimilarity } from "fast-cosine-similarity";
 
 const MAX_CHUNK_SIZE = 512;
@@ -41,7 +41,7 @@ function preprocessText(text: string): string[] {
   }
 
   const filteredTokens = tokens.filter(
-    (token) => !stopwords_pt.includes(token)
+    (token) => !stopwordsPt.words.includes(token)
   );
   const stemmedTokens = filteredTokens.map((token) => stemmer.stem(token));
   const bigrams = NGrams.bigrams(stemmedTokens)
