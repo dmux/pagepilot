@@ -114,11 +114,11 @@ export class Logger {
         break;
       case LogLevel.WARN:
         console.warn(formattedMessage);
-        if (error) console.warn(error);
+        if (error) {console.warn(error);}
         break;
       case LogLevel.ERROR:
         console.error(formattedMessage);
-        if (error) console.error(error);
+        if (error) {console.error(error);}
         break;
     }
   }

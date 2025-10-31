@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import axios from "axios";
 import { getTranslations } from "./util";
+import { getProxyConfig } from "./proxy-config";
 import {
   addDocSource,
   removeDocSource,
@@ -31,7 +32,11 @@ export async function handleDocsCommand(
 ${url}
 ...`);
       try {
-        const response = await axios.get(url, { timeout: 10000 });
+        const proxyConfig = getProxyConfig();
+        const response = await axios.get(url, {
+          timeout: 10000,
+          ...proxyConfig,
+        });
         const content = response.data as string;
         const embeddings = generateEmbeddings(content);
         await addDocSource(context, name, url, content, embeddings);
@@ -132,7 +137,11 @@ export async function findRelatedDocs(url: string): Promise<string[]> {
   for (const pattern of patterns) {
     const docUrl = `${baseUrl}/${pattern}`;
     try {
-      await axios.head(docUrl, { timeout: 2000 });
+      const proxyConfig = getProxyConfig();
+      await axios.head(docUrl, {
+        timeout: 2000,
+        ...proxyConfig,
+      });
       relatedDocs.push(docUrl);
     } catch (error) {
       // Ignore errors
@@ -181,7 +190,11 @@ ${url}
       }
     }
 
-    const response = await axios.get(url, { timeout: 10000 });
+    const proxyConfig = getProxyConfig();
+    const response = await axios.get(url, {
+      timeout: 10000,
+      ...proxyConfig,
+    });
     const content = response.data as string;
     const name = url.split("/").pop() || url;
     const embeddings = generateEmbeddings(content);

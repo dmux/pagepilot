@@ -135,7 +135,7 @@ export class TFIDFCalculator {
    * Calculate Term Frequency (TF)
    */
   private calculateTF(termCount: number, totalTerms: number): number {
-    if (totalTerms === 0) return 0;
+    if (totalTerms === 0) {return 0;}
 
     const rawTF = termCount / totalTerms;
 
@@ -289,7 +289,7 @@ export class TFIDFCalculator {
       for (const value of vector) {
         maxValue = Math.max(maxValue, value);
         minValue = Math.min(minValue, value);
-        if (value === 0) zeroCount++;
+        if (value === 0) {zeroCount++;}
         totalElements++;
       }
     }
