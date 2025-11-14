@@ -1,4 +1,6 @@
 import * as vscode from "vscode";
+import { ChunkMetadata } from "./enhanced-embedding-generator";
+import { EmbeddingConfig } from "./types/config";
 
 const DOC_SOURCES_KEY = "docSources";
 const ACTIVE_DOC_KEY = "activeDoc";
@@ -6,6 +8,7 @@ const ACTIVE_DOC_KEY = "activeDoc";
 export interface Embedding {
   chunk: string;
   embedding: number[];
+  metadata?: ChunkMetadata;
 }
 
 export interface DocSource {
@@ -13,6 +16,7 @@ export interface DocSource {
   url: string;
   content: string;
   embeddings: Embedding[];
+  embeddingConfig?: EmbeddingConfig;
 }
 
 export function getDocSources(context: vscode.ExtensionContext): DocSource[] {
@@ -24,10 +28,11 @@ export async function addDocSource(
   name: string,
   url: string,
   content: string,
-  embeddings: Embedding[]
+  embeddings: Embedding[],
+  embeddingConfig?: EmbeddingConfig
 ) {
   const sources = getDocSources(context);
-  sources.push({ name, url, content, embeddings });
+  sources.push({ name, url, content, embeddings, embeddingConfig });
   await context.workspaceState.update(DOC_SOURCES_KEY, sources);
 }
 

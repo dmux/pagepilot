@@ -11,7 +11,39 @@ import {
   clearActiveDoc,
   clearAllDocSources,
 } from "./context";
-import { generateEmbeddings } from "./embeddings";
+import type { Embedding } from "./context";
+import type { EmbeddingConfig } from "./types/config";
+import {
+  generateEmbeddings,
+  generateEnhancedEmbeddings,
+} from "./embeddings";
+import { getOptimalConfigForCorpus } from "./config/optimizer";
+
+interface EmbeddingBuildResult {
+  embeddings: Embedding[];
+  config?: EmbeddingConfig;
+}
+
+function buildEmbeddingsWithFallback(content: string): EmbeddingBuildResult {
+  try {
+    const optimalConfig = getOptimalConfigForCorpus([content]);
+    const enhancedEmbeddings = generateEnhancedEmbeddings(
+      content,
+      optimalConfig
+    );
+
+    if (enhancedEmbeddings.length > 0) {
+      return { embeddings: enhancedEmbeddings, config: optimalConfig };
+    }
+  } catch (error) {
+    console.warn(
+      "Enhanced embedding generation failed, falling back to basic embeddings",
+      error
+    );
+  }
+
+  return { embeddings: generateEmbeddings(content) };
+}
 
 export async function handleDocsCommand(
   context: vscode.ExtensionContext,
@@ -38,8 +70,8 @@ ${url}
           ...proxyConfig,
         });
         const content = response.data as string;
-        const embeddings = generateEmbeddings(content);
-        await addDocSource(context, name, url, content, embeddings);
+        const { embeddings, config } = buildEmbeddingsWithFallback(content);
+        await addDocSource(context, name, url, content, embeddings, config);
         await setActiveDoc(context, name);
         stream.markdown(translations.docs.add.success.replace("{name}", name));
       } catch (error) {
@@ -197,9 +229,9 @@ ${url}
     });
     const content = response.data as string;
     const name = url.split("/").pop() || url;
-    const embeddings = generateEmbeddings(content);
+    const { embeddings, config } = buildEmbeddingsWithFallback(content);
 
-    await addDocSource(context, name, url, content, embeddings);
+    await addDocSource(context, name, url, content, embeddings, config);
     await setActiveDoc(context, name);
 
     const wordCount = content.split(/\s+/).length;
